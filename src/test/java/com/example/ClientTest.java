@@ -28,21 +28,22 @@ public class ClientTest {
     @Test
     public void testPrintAllIpAddresses() throws IOException {
         InetAddress ip1Mock = mock(InetAddress.class);
-        when(ip1Mock.getHostAddress()).thenReturn("ip1");
+        when(ip1Mock.isSiteLocalAddress()).thenReturn(false);
         InetAddress ip2Mock = mock(InetAddress.class);
         when(ip2Mock.getHostAddress()).thenReturn("ip2");
+        when(ip2Mock.isSiteLocalAddress()).thenReturn(true);
         when(iparMock.retrieveAll()).thenReturn(Arrays.asList(ip1Mock, ip2Mock));
         PrintStream outMock = mock(PrintStream.class);
 
         sut.printAllIpAddresses(outMock);
 
-        verify(ip1Mock).getHostAddress();
+        verify(ip1Mock).isSiteLocalAddress();
         verifyNoMoreInteractions(ip1Mock);
+        verify(ip2Mock).isSiteLocalAddress();
         verify(ip2Mock).getHostAddress();
         verifyNoMoreInteractions(ip2Mock);
         verify(iparMock).retrieveAll();
         verifyNoMoreInteractions(iparMock);
-        verify(outMock).println("ip1");
         verify(outMock).println("ip2");
         verifyNoMoreInteractions(outMock);
     }

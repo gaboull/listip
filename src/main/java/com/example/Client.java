@@ -16,7 +16,9 @@ public class Client implements IClient {
     public void printAllIpAddresses(PrintStream out) {
         try {
             for (InetAddress adr : ipar.retrieveAll()) {
-                out.println(adr.getHostAddress());
+                if (adr.isSiteLocalAddress()) {
+                    out.println(adr.getHostAddress());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
